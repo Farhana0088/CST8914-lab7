@@ -24,9 +24,14 @@ body {
 a{
   color: #006b3a;
 }
+
+
+/*
+Commented out this CSS block because outline:none removes visible focus indicator
 main a{
-  outline: none;
+  outline: none; Needs to be removed    
 }
+  */
 h2 {
   margin-top: 0;
 }
@@ -55,6 +60,7 @@ header {
   margin: 0;
   padding: 16px 0;
   border-bottom: 1px solid #ddd;
+  outline: 2px solid #006b3a /* For focus indicator */
 }
 
 .offscreen {
@@ -83,6 +89,11 @@ header {
   margin-right: 8px;
   width: 22px;
   height: 22px;
+}
+
+/* To provide visible focus the following CSS code                                         is added*/
+.menu a:focus,.tier-header h2:focus {
+  outline: 2px solid #006b3a; /* Custom focus indicator */
 }
 
 article p {
@@ -198,30 +209,24 @@ article p {
 
 <body>
   <header>
-
-    <div class="container">
-      <h1 class="logo">The Funion</h1>
-      
+    <!-- Changed div to main-->
+    <main class="container"> 
+      <h1 class="logo">The Funion</h1>      
       <!-- Maybe this could be improved with aria-activedescendant later? -->
-      <nav class="menu">
+      <nav class="menu" aria-label="Primary">
         <a href="#">Home</a>
         <a href="#">Politics</a>
-        <a href="#" tabindex="-1">Business</a>
+        <!-- Removed tabindex="-1" from line 213 so that Business tab is acceesable using keyboard-->
+        <a href="#">Business</a> 
         <a href="#">Entertainment</a>
         <a href="#">Sports</a>
-        <a href="#" class="btn-search pull-right"><img src="https://raw.githubusercontent.com/udacity/ud891/2de2a0688c68809a3b453db3a24b1a59e8401459/lesson2-focus/02-dom-order/images/search.svg" alt="Search" />Search</a> 
+        <a href="#" class="btn-search pull-right">
+          <img src="https://raw.githubusercontent.com/udacity/ud891/2de2a0688c68809a3b453db3a24b1a59e8401459/lesson2-focus/02-dom-order/images/search.svg" alt="Search" />Search</a> 
 
       </nav>
-    </div>
-  </header>
-  <div class="newsletter">
-    <div class="container">
-      <h3>Like the Funion? Consider joining our newsletter!</h3>
-      <input type="text">
-      <button type="button" onfocus="getFocus()">Sign up</button></div>
-      
-    </div>
-  </div>
+    </main>
+  </header>  
+
   <main class="container">
     <h2 class="offscreen">Top story</h2>
     <article class="main-story">
@@ -286,13 +291,27 @@ article p {
     </div>
     
   </main>
-  <!--   stuff can be added here :)
-  <footer>
-  </footer>
-  -->
   
+  <!-- Repositioned footer under <footer> tage replacing the <div> tag
+    It also resolved the meaning ful tab navidation issue -->
+
+  <footer class="newsletter">
+    <div class="container">
+      <h3>Like the Funion? Consider joining our newsletter!</h3>
+      <!-- Using <label for making the input field accssible>-->
+      <label for="newsletter-email" class="offscreen">Email address:</label>
+      <!-- Changed input type "text" to "email" to ensure proper validation -->
+      <input type="email" id="newsletter-email" placeholder="Enter your email" required>
+      <!--Changed button type to submit and replaced onfocus to onclick to stop 
+      unexpected opening of the thank you page for pressing tab to navigate-->
+      <button type="submit" onclick="openThankYouPage()">Sign up</button></div>      
+    </div>
+  </footer>
+  
+  <!--Changed the name of the function so that the desire page is opned when 
+  the submit button in the footer is clicked -->
   <script>
-    function getFocus() {
+    function openThankYouPage() {
       window.open('https://aidaform.com/templates/thank-you-page-with-redirects.html','mywindow').focus()
     }
     </script>
